@@ -29,6 +29,13 @@ var (
 	))
 )
 
+// todo:
+// 本地化群成员列表
+// 入群自动入库, 退群反之
+// 新消息自动入库
+// 娶成员自动入库
+// 优化代码
+// 控制开关
 func init() {
 	go func() {
 		db.db.DBPath = en.DataFolder() + "data.db"
@@ -78,9 +85,9 @@ func init() {
 							return nil
 						}(),
 					},
-					Caption: ctx.Message.From.String() +
-						"今天你娶了老婆" + "[" + info.WomanName + "]",
-					// "(https://t.me/" + info.WomanName + ")",
+					Caption: "@" + ctx.Message.From.String() +
+						"今天你娶了老婆" + "[" + info.WomanName + "]" +
+						"(https://t.me/" + info.WomanName + ")",
 					ParseMode: "Markdown",
 				})
 				return
@@ -99,9 +106,9 @@ func init() {
 							return nil
 						}(),
 					},
-					Caption: ctx.Message.From.String() +
-						"今天你嫁给老公" + "[" + info.ManName + "]",
-					// "(https://t.me/" + info.ManName + ")",
+					Caption: "@" + ctx.Message.From.String() +
+						"今天你嫁给老公" + "[" + info.ManName + "]" +
+						"(https://t.me/" + info.ManName + ")",
 					ParseMode: "Markdown",
 				})
 				return
@@ -182,9 +189,9 @@ func init() {
 						return nil
 					}(),
 				},
-				Caption: ctx.Message.From.String() +
-					"今天你娶了老婆" + "[" + info.WomanName + "]",
-				// "(https://t.me/" + info.WomanName + ")",
+				Caption: "@" + ctx.Message.From.String() +
+					"今天你娶了老婆" + "[" + info.WomanName + "]" +
+					"(https://t.me/" + info.WomanName + ")",
 				ParseMode: "Markdown",
 			})
 		})

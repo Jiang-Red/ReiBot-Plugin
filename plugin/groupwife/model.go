@@ -9,10 +9,10 @@ import (
 )
 
 var (
-	db = &datebase{db: &sql.Sqlite{}}
+	db = &database{db: &sql.Sqlite{}}
 )
 
-type datebase struct {
+type database struct {
 	db *sql.Sqlite
 	sync.RWMutex
 }
@@ -57,7 +57,7 @@ func nowtime() string {
 	return time.Now().Format("15:04:05")
 }
 
-func (sql *datebase) checktime(gid int64) error {
+func (sql *database) checktime(gid int64) error {
 	gpinfo, err := sql.watchsetting(gid)
 	if err != nil {
 		return err
@@ -73,11 +73,11 @@ func (sql *datebase) checktime(gid int64) error {
 	return nil
 }
 
-func (sql *datebase) watchsetting(gid int64) (info groupinfo, err error) {
+func (sql *database) watchsetting(gid int64) (info groupinfo, err error) {
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := strconv.FormatInt(gid, 10)
-	err = sql.db.Find("groupinfo", info, "where gid is "+strgid)
+	err = sql.db.Find("groupinfo", &info, "where gid is "+strgid)
 	if err == nil {
 		return
 	}
@@ -91,13 +91,16 @@ func (sql *datebase) watchsetting(gid int64) (info groupinfo, err error) {
 	return
 }
 
-func (sql *datebase) findcertificates(gid, uid int64) (info certificates, err error) {
+func (sql *database) findcertificates(gid, uid int64) (info certificates, err error) {
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := "group" + strconv.FormatInt(gid, 10)
-	err = sql.db.Create(strgid, &certificates{})
-	if err != nil {
-		return
+	ok := sql.db.CanFind(strgid, "where id = 0")
+	if !ok {
+		err = sql.db.Create(strgid, &certificates{})
+		if err != nil {
+			return
+		}
 	}
 	struid := strconv.FormatInt(uid, 10)
 	err = sql.db.Find(strgid, &info, "where ManID = "+struid)
@@ -107,7 +110,7 @@ func (sql *datebase) findcertificates(gid, uid int64) (info certificates, err er
 	return
 }
 
-func (sql *datebase) updatecertificates(gid int64, info *certificates) error {
+func (sql *database) updatecertificates(gid int64, info *certificates) error {
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := "group" + strconv.FormatInt(gid, 10)
