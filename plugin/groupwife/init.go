@@ -56,7 +56,7 @@ func init() {
 				_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
 				return
 			}
-			uid := ctx.Message.Entities[0].User.ID
+			uid := ctx.Message.From.ID
 			info, _ := db.findcertificates(gid, uid)
 			switch {
 			case info != &certificates{} && (info.ManID == 0 || info.WomanID == 0):
