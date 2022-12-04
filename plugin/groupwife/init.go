@@ -137,19 +137,21 @@ func init() {
 						_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
 						return
 					}
-					_, _ = ctx.SendPlainMessage(false, "今天你是单身狗")
+					_, _ = ctx.SendPlainMessage(false, "今天你选择了保持单身")
 				default:
-					_, _ = ctx.SendPlainMessage(false, "什么都没娶到...")
+					_, _ = ctx.SendPlainMessage(false, "谁也没有娶到...")
 					return
 				}
 			}
 			uidinfo, _ := ctx.Caller.GetChatMember(tgba.GetChatMemberConfig{
 				ChatConfigWithUser: tgba.ChatConfigWithUser{
+					ChatID: gid,
 					UserID: uid,
 				},
 			})
 			targetinfo, _ := ctx.Caller.GetChatMember(tgba.GetChatMemberConfig{
 				ChatConfigWithUser: tgba.ChatConfigWithUser{
+					ChatID: gid,
 					UserID: target,
 				},
 			})
