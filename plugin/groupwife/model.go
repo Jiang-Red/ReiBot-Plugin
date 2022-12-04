@@ -5,37 +5,11 @@ import (
 	"sync"
 	"time"
 
-	fcext "github.com/FloatTech/floatbox/ctxext"
 	sql "github.com/FloatTech/sqlite"
-	rei "github.com/fumiama/ReiBot"
 )
 
 var (
-	db    = &datebase{db: &sql.Sqlite{}}
-	getdb = fcext.DoOnceOnSuccess(func(ctx *rei.Ctx) bool {
-		db.db.DBPath = en.DataFolder() + "date.db"
-		err := db.db.Open(time.Hour * 24)
-		if err != nil {
-			_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
-			return false
-		}
-		err = db.db.Create("groupinfo", &groupinfo{})
-		if err != nil {
-			_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
-			return false
-		}
-		err = db.db.Create("favorability", &favorability{})
-		if err != nil {
-			_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
-			return false
-		}
-		err = db.db.Create("cooling", &cooling{})
-		if err != nil {
-			_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
-			return false
-		}
-		return true
-	})
+	db = &datebase{db: &sql.Sqlite{}}
 )
 
 type datebase struct {

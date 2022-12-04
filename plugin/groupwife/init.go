@@ -2,6 +2,7 @@ package groupwife
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/FloatTech/floatbox/math"
 
@@ -21,14 +22,33 @@ var (
 			return ctx.Message.Chat.ID
 		}),
 		rei.WithPostFn[int64](func(ctx *rei.Ctx) {
-			ctx.SendPlainMessage(true,
+			_, _ = ctx.SendPlainMessage(true,
 				message.Text("已经有正在进行的操作了!"))
 		}),
 	))
 )
 
 func init() {
-	en.OnMessageFullMatch("今天谁是我老婆", rei.OnlyGroup, getdb).SetBlock(true).
+	go func() {
+		db.db.DBPath = en.DataFolder() + "date.db"
+		err := db.db.Open(time.Hour * 24)
+		if err != nil {
+			panic(err)
+		}
+		err = db.db.Create("groupinfo", &groupinfo{})
+		if err != nil {
+			panic(err)
+		}
+		err = db.db.Create("favorability", &favorability{})
+		if err != nil {
+			panic(err)
+		}
+		err = db.db.Create("cooling", &cooling{})
+		if err != nil {
+			panic(err)
+		}
+	}()
+	en.OnMessageFullMatch("今天谁是我老婆", rei.OnlyGroup).SetBlock(true).
 		Handle(func(ctx *rei.Ctx) {
 			gid := ctx.Message.Chat.ID
 			err := db.checktime(gid)
