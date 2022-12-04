@@ -95,7 +95,7 @@ func (sql *datebase) findcertificates(gid, uid int64) (info *certificates, err e
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := "group" + strconv.FormatInt(gid, 10)
-	err = sql.db.Create(strgid, info)
+	err = sql.db.Create(strgid, &certificates{})
 	if err != nil {
 		return
 	}
