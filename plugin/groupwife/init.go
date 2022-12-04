@@ -48,7 +48,7 @@ func init() {
 			panic(err)
 		}
 	}()
-	en.OnMessageFullMatch("今天谁是我老婆", rei.OnlyGroup).SetBlock(true).
+	en.OnMessageFullMatch("今天谁是我老婆").SetBlock(true).
 		Handle(func(ctx *rei.Ctx) {
 			gid := ctx.Message.Chat.ID
 			err := db.checktime(gid)
