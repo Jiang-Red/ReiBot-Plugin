@@ -26,6 +26,8 @@ import (
 	_ "github.com/FloatTech/ReiBot-Plugin/plugin/saucenao"
 	_ "github.com/FloatTech/ReiBot-Plugin/plugin/tracemoe"
 
+	_ "github.com/FloatTech/ReiBot-Plugin/plugin/groupwife"
+
 	// -----------------------以下为内置依赖，勿动------------------------ //
 	rei "github.com/fumiama/ReiBot"
 	tgba "github.com/go-telegram-bot-api/telegram-bot-api/v5"
