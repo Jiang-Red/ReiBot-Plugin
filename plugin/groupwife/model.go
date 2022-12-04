@@ -68,7 +68,7 @@ func (sql *datebase) checktime(gid int64) error {
 	if nowday() != gpinfo.UpdateTime {
 		_ = sql.db.Drop("group" + strgid)
 		gpinfo.UpdateTime = nowday()
-		return sql.db.Insert("groupinfo", gpinfo)
+		return sql.db.Insert("groupinfo", &gpinfo)
 	}
 	return nil
 }
