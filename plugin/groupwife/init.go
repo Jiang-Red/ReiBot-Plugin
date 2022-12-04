@@ -30,7 +30,7 @@ var (
 
 func init() {
 	go func() {
-		db.db.DBPath = en.DataFolder() + "date.db"
+		db.db.DBPath = en.DataFolder() + "data.db"
 		err := db.db.Open(time.Hour * 24)
 		if err != nil {
 			panic(err)
@@ -59,7 +59,7 @@ func init() {
 			uid := ctx.Message.From.ID
 			info, _ := db.findcertificates(gid, uid)
 			switch {
-			case info != &certificates{} && (info.ManID == 0 || info.WomanID == 0):
+			case info != certificates{} && (info.ManID == 0 || info.WomanID == 0):
 				_, _ = ctx.SendPlainMessage(false, "今天你选择了保持单身")
 				return
 			case info.ManID == uid:
@@ -114,7 +114,7 @@ func init() {
 			for i := 0; i < len(groupmemberlist); i++ {
 				user := groupmemberlist[i].User.ID
 				info, _ := db.findcertificates(gid, user)
-				if (info != &certificates{}) {
+				if (info != certificates{}) {
 					continue
 				}
 				memberlist = append(memberlist, user)

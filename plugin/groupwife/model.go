@@ -73,7 +73,7 @@ func (sql *datebase) checktime(gid int64) error {
 	return nil
 }
 
-func (sql *datebase) watchsetting(gid int64) (info *groupinfo, err error) {
+func (sql *datebase) watchsetting(gid int64) (info groupinfo, err error) {
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := strconv.FormatInt(gid, 10)
@@ -81,17 +81,17 @@ func (sql *datebase) watchsetting(gid int64) (info *groupinfo, err error) {
 	if err == nil {
 		return
 	}
-	info = &groupinfo{
+	info = groupinfo{
 		GroupID:     gid,
 		SwitchMarry: 1,
 		SwitchNTR:   1,
 		LimitTime:   12,
 	}
-	err = sql.db.Insert("groupinfo", info)
+	err = sql.db.Insert("groupinfo", &info)
 	return
 }
 
-func (sql *datebase) findcertificates(gid, uid int64) (info *certificates, err error) {
+func (sql *datebase) findcertificates(gid, uid int64) (info certificates, err error) {
 	sql.Lock()
 	defer sql.Unlock()
 	strgid := "group" + strconv.FormatInt(gid, 10)
@@ -100,7 +100,7 @@ func (sql *datebase) findcertificates(gid, uid int64) (info *certificates, err e
 		return
 	}
 	struid := strconv.FormatInt(uid, 10)
-	err = sql.db.Find(strgid, info, "where ManID = "+struid)
+	err = sql.db.Find(strgid, &info, "where ManID = "+struid)
 	if err != nil {
 		err = sql.db.Find(strgid, &info, "where WomanID = "+struid)
 	}
