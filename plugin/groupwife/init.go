@@ -170,6 +170,9 @@ func init() {
 			}
 			_, _ = ctx.Caller.Send(&tgba.PhotoConfig{
 				BaseFile: tgba.BaseFile{
+					BaseChat: tgba.BaseChat{
+						ChatID: gid,
+					},
 					File: func() tgba.RequestFileData {
 						p, err := ctx.Caller.GetUserProfilePhotos(tgba.NewUserProfilePhotos(info.WomanID))
 						if err == nil && len(p.Photos) > 0 {
