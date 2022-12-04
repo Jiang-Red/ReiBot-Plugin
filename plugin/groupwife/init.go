@@ -1,3 +1,4 @@
+// Package groupwife ...
 package groupwife
 
 import (
@@ -155,22 +156,20 @@ func init() {
 					UserID: target,
 				},
 			})
-			err = db.updatecertificates(gid, &certificates{
+			info = certificates{
 				ManID:      uid,
 				WomanID:    target,
 				ManName:    uidinfo.User.UserName,
 				WomanName:  targetinfo.User.UserName,
 				UpdateTime: time,
-			})
+			}
+			err = db.updatecertificates(gid, &info)
 			if err != nil {
 				_, _ = ctx.SendPlainMessage(false, "ERROR: ", err)
 				return
 			}
 			_, _ = ctx.Caller.Send(&tgba.PhotoConfig{
 				BaseFile: tgba.BaseFile{
-					BaseChat: tgba.BaseChat{
-						ChatID: ctx.Message.Chat.ID,
-					},
 					File: func() tgba.RequestFileData {
 						p, err := ctx.Caller.GetUserProfilePhotos(tgba.NewUserProfilePhotos(info.WomanID))
 						if err == nil && len(p.Photos) > 0 {
